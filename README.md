@@ -77,7 +77,7 @@ LJ-Sim is a high-performance molecular dynamics simulation engine implementing t
 ### Software Dependencies
 ```bash
 # Core Programming Environment
-C++23                    # Primary development language
+C++20                   # Primary development language
 
 # Scientific Computing
 Eigen >= 3.4.0          # Numerical operations
