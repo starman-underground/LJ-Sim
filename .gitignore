@@ -1,0 +1,8 @@
+build/
+*.exe
+*.o
+*.so
+*.dll
+__pycache__/
+*.pyc
+.vscode/settings.json
