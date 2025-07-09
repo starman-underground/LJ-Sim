@@ -80,7 +80,7 @@ LJ-Sim is a high-performance molecular dynamics simulation engine implementing t
 C++20                   # Primary development language
 
 # Scientific Computing
-Eigen >= 3.4.0          # Numerical operations
+Eigen >= 3.4.0          # Numerical operations (automatically downloaded)
 Mimir >= 0.0.1     # Visualization and plotting
 
 # GPU Computing
@@ -112,14 +112,19 @@ Jupyter >= 1.0.0        # Interactive notebooks
 ```bash
 # Clone repository
 git clone https://github.com/starman-underground/LJ-Sim
-cd lennard-jones-md
+cd LJ-Sim
 
-# Setup build environment
-./scripts/setup_environment.sh
+# Build project (Eigen will be automatically downloaded)
+# On Linux/macOS:
+./build.sh
 
-# Build project
-cmake -B build
-cmake --build build -j
+# On Windows:
+build.bat
+
+# Or manually:
+mkdir build && cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+cmake --build . --config Release
 ```
 
 ### 2. Verify CUDA Installation
@@ -166,7 +171,7 @@ cmake --build . --config Release
 ## 📁 Project Structure
 
 ```
-lennard-jones-md/
+LJ-Sim/
 ├── CMakeLists.txt
 ├── README.md
 ├── .gitignore
@@ -180,7 +185,6 @@ lennard-jones-md/
 ├── include/
 │   ├── ljmd/
 │   │   ├── core/
-│   │   │   ├── particle.hpp
 │   │   │   ├── system.hpp
 │   │   │   ├── forces.hpp
 │   │   │   └── integrator.hpp
@@ -197,11 +201,9 @@ lennard-jones-md/
 │   │   │   └── memory_manager.cuh
 │   │   └── utils/
 │   │       ├── constants.hpp
-│   │       ├── vector2d.hpp
 │   │       └── timer.hpp
 ├── src/
 │   ├── core/
-│   │   ├── particle.cpp
 │   │   ├── system.cpp
 │   │   ├── forces.cpp
 │   │   └── integrator.cpp
@@ -217,7 +219,6 @@ lennard-jones-md/
 │   │   ├── gpu_integrator.cu
 │   │   └── memory_manager.cu
 │   └── utils/
-│       ├── vector2d.cpp
 │       └── timer.cpp
 ├── examples/
 │   ├── week1_basic_2d/
@@ -263,13 +264,12 @@ lennard-jones-md/
 │       └── plots/
 └── third_party/
     ├── eigen/
-    ├── mimir/
-    └── catch2/
+    └── mimir/
 ```
 
 ## 🧪 Usage Examples
 
-### Basic 2D Simulation
+### Basic Simulation
 ```cpp
 #include <iostream>
 #include <memory>
@@ -277,25 +277,24 @@ lennard-jones-md/
 #include "ljmd/core/particle.hpp"
 #include "ljmd/core/forces.hpp"
 #include "ljmd/core/integrator.hpp"
-#include "ljmd/utils/vector2d.hpp"
 
 using namespace ljmd;
 
 int main() {
     // Create system
-    System system(10.0, 10.0);
+    System system(10.0, 10.0, 10.0);
     
     // Create two particles
     auto particle1 = std::make_shared<Particle>(1.0, 1.0, 1.0);
     auto particle2 = std::make_shared<Particle>(1.0, 1.0, 1.0);
     
     // Set initial positions
-    particle1->set_position(Vector2D(4.0, 5.0));
-    particle2->set_position(Vector2D(6.0, 5.0));
+    particle1->set_position(4.0, 5.0, 0.0);
+    particle2->set_position(6.0, 5.0, 1.0);
     
     // Set initial velocities
-    particle1->set_velocity(Vector2D(0.1, 0.0));
-    particle2->set_velocity(Vector2D(-0.1, 0.0));
+    particle1->set_velocity(0.1, 0.0, 0.2);
+    particle2->set_velocity(-0.1, 0.0, 0.1);
     
     // Add particles to system
     system.add_particle(particle1);

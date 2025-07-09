@@ -6,3 +6,14 @@ build/
 __pycache__/
 *.pyc
 .vscode/settings.json
+
+# CMake cache and build artifacts
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+
+# FetchContent cache (downloaded dependencies)
+_build/
+_deps/
